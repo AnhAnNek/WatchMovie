@@ -23,6 +23,27 @@ public class Movie implements Parcelable {
         this.movie_overview = movie_overview;
     }
 
+    protected Movie(Parcel in) {
+        title = in.readString();
+        poster_path = in.readString();
+        release_date = in.readString();
+        movie_id = in.readInt();
+        vote_average = in.readFloat();
+        movie_overview = in.readString();
+    }
+
+    public static final Creator<Movie> CREATOR = new Creator<Movie>() {
+        @Override
+        public Movie createFromParcel(Parcel in) {
+            return new Movie(in);
+        }
+
+        @Override
+        public Movie[] newArray(int size) {
+            return new Movie[size];
+        }
+    };
+
     public String getTitle() {
         return title;
     }
