@@ -3,33 +3,46 @@ package com.vanannek.watchmovie.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Movie implements Parcelable {
     // model class for our movies
 
+    @SerializedName("title")
     private String title;
-    private String poster_path;
-    private String release_date;
-    private int movie_id;
-    private float vote_average;
-    private String movie_overview;
 
-    public Movie(String title, String poster_path, String release_date,
-                 int movie_id, float vote_average, String movie_overview) {
+    @SerializedName("poster_path")
+    private String posterPath;
+
+    @SerializedName("release_date")
+    private String releaseDate;
+
+    @SerializedName("id")
+    private int movieId;
+
+    @SerializedName("vote_average")
+    private float voteAverage;
+
+    @SerializedName("overview")
+    private String overview;
+
+    public Movie(String title, String posterPath, String releaseDate,
+                 int movieId, float voteAverage, String overview) {
         this.title = title;
-        this.poster_path = poster_path;
-        this.release_date = release_date;
-        this.movie_id = movie_id;
-        this.vote_average = vote_average;
-        this.movie_overview = movie_overview;
+        this.posterPath = posterPath;
+        this.releaseDate = releaseDate;
+        this.movieId = movieId;
+        this.voteAverage = voteAverage;
+        this.overview = overview;
     }
 
     protected Movie(Parcel in) {
         title = in.readString();
-        poster_path = in.readString();
-        release_date = in.readString();
-        movie_id = in.readInt();
-        vote_average = in.readFloat();
-        movie_overview = in.readString();
+        posterPath = in.readString();
+        releaseDate = in.readString();
+        movieId = in.readInt();
+        voteAverage = in.readFloat();
+        overview = in.readString();
     }
 
     public static final Creator<Movie> CREATOR = new Creator<Movie>() {
@@ -48,24 +61,24 @@ public class Movie implements Parcelable {
         return title;
     }
 
-    public String getPoster_path() {
-        return poster_path;
+    public String getPosterPath() {
+        return posterPath;
     }
 
-    public String getRelease_date() {
-        return release_date;
+    public String getReleaseDate() {
+        return releaseDate;
     }
 
-    public int getMovie_id() {
-        return movie_id;
+    public int getMovieId() {
+        return movieId;
     }
 
-    public float getVote_average() {
-        return vote_average;
+    public float getVoteAverage() {
+        return voteAverage;
     }
 
-    public String getMovie_overview() {
-        return movie_overview;
+    public String getOverview() {
+        return overview;
     }
 
     @Override
@@ -76,10 +89,10 @@ public class Movie implements Parcelable {
     @Override
     public void writeToParcel(Parcel parcel, int flags) {
         parcel.writeString(title);
-        parcel.writeString(poster_path);
-        parcel.writeString(release_date);
-        parcel.writeInt(movie_id);
-        parcel.writeFloat(vote_average);
-        parcel.writeString(movie_overview);
+        parcel.writeString(posterPath);
+        parcel.writeString(releaseDate);
+        parcel.writeInt(movieId);
+        parcel.writeFloat(voteAverage);
+        parcel.writeString(overview);
     }
 }

@@ -8,7 +8,7 @@ import com.vanannek.watchmovie.models.Movie;
 public class MovieResponse {
     // 1 - Finding the Movie Object
     @SerializedName("results")
-    @Expose
+    @Expose()
     private Movie movie;
 
     public Movie getMovie() {

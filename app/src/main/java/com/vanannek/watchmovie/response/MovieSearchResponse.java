@@ -8,7 +8,7 @@ import java.util.List;
 
 // This class is for getting multiple movies (Movies list) - popular movies
 public class MovieSearchResponse {
-    @SerializedName("total_result")
+    @SerializedName("total_results")
     @Expose()
     private int total_count;
 
