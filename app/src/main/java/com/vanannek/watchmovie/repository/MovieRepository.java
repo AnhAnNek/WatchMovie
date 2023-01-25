@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.vanannek.watchmovie.models.Movie;
+import com.vanannek.watchmovie.request.MovieAPIClient;
 
 import java.util.List;
 
@@ -11,10 +12,8 @@ public class MovieRepository {
 
     // This class is acting as repositories
 
-    // LiveData
-    private MutableLiveData<List<Movie>> mMovies = new MutableLiveData<>();
-
     private static MovieRepository instance;
+    private MovieAPIClient movieAPIClient;
 
     public static MovieRepository getInstance() {
         if (instance == null) {
@@ -28,10 +27,10 @@ public class MovieRepository {
     }
 
     private MovieRepository() {
-        mMovies = new MutableLiveData<>();
+        movieAPIClient = MovieAPIClient.getInstance();
     }
 
     public LiveData<List<Movie>> getMovies() {
-        return mMovies;
+        return movieAPIClient.getMovies();
     }
 }
