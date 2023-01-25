@@ -1,6 +1,8 @@
 package com.vanannek.watchmovie;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -13,21 +15,23 @@ import com.vanannek.watchmovie.request.APIService;
 import com.vanannek.watchmovie.response.MovieSearchResponse;
 import com.vanannek.watchmovie.utils.Credentials;
 import com.vanannek.watchmovie.utils.MovieApi;
+import com.vanannek.watchmovie.viewmodels.MovieListViewModel;
 
-import java.security.Provider;
 import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MovieListActivity extends AppCompatActivity {
 
     private static final String TAG = "MovieListActivity";
 
     Button btn;
+
+    // ViewModel
+    private MovieListViewModel movieListViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,9 +40,18 @@ public class MovieListActivity extends AppCompatActivity {
 
         btn = findViewById(R.id.btn);
 
-        btn.setOnClickListener(v -> {
-//            getRetrofitResponse();
-            getRetrofitResponseAccordingToID();
+        movieListViewModel = new ViewModelProvider(this).get(MovieListViewModel.class);
+        observeAnyChange();
+    }
+
+    // Observing any data change
+    private void observeAnyChange() {
+        movieListViewModel.getMovies().observe(this, new Observer<List<Movie>>() {
+            @Override
+            public void onChanged(List<Movie> movies) {
+                // Observing for any data change
+
+            }
         });
     }
 
@@ -46,9 +59,9 @@ public class MovieListActivity extends AppCompatActivity {
         MovieApi movieApi = APIService.getInstance().getMovieApi();
 
         Call<MovieSearchResponse> responseCall = movieApi.searchMovie(
-                        Credentials.API_KEY,
-                        "Action",
-                        1);
+                Credentials.API_KEY,
+                "Action",
+                1);
 
         responseCall.enqueue(new Callback<MovieSearchResponse>() {
             @Override
