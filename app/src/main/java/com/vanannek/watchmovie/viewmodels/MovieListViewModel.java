@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.vanannek.watchmovie.models.Movie;
+import com.vanannek.watchmovie.repository.MovieRepository;
 
 import java.util.List;
 
@@ -12,18 +13,14 @@ public class MovieListViewModel extends ViewModel {
 
     // this class is used for VIEWMODEL
 
-    // LiveData
-    private MutableLiveData<List<Movie>> mMovies = new MutableLiveData<>();
+    private MovieRepository movieRepository;
 
-    // Contructor
+    // Constructor
     public MovieListViewModel() {
-    }
-
-    public MovieListViewModel(MutableLiveData<List<Movie>> mMovies) {
-        this.mMovies = mMovies;
+        movieRepository = MovieRepository.getInstance();
     }
 
     public LiveData<List<Movie>> getMovies() {
-        return mMovies;
+        return movieRepository.getMovies();
     }
 }
