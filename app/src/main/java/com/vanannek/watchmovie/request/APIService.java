@@ -35,7 +35,7 @@ public class APIService {
         return instance;
     }
 
-    public MovieApi getMovieApi() {
+    public MovieApi getMovieAPI() {
         return movieApi;
     }
 }

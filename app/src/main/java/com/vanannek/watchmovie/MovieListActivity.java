@@ -56,7 +56,7 @@ public class MovieListActivity extends AppCompatActivity {
     }
 
     private void getRetrofitResponse() {
-        MovieApi movieApi = APIService.getInstance().getMovieApi();
+        MovieApi movieApi = APIService.getInstance().getMovieAPI();
 
         Call<MovieSearchResponse> responseCall = movieApi.searchMovie(
                 Credentials.API_KEY,
@@ -93,7 +93,7 @@ public class MovieListActivity extends AppCompatActivity {
     }
 
     private void getRetrofitResponseAccordingToID() {
-        MovieApi movieApi = APIService.getInstance().getMovieApi();
+        MovieApi movieApi = APIService.getInstance().getMovieAPI();
         Call<Movie> responseCall = movieApi.getMovie(
                 343611,
                 Credentials.API_KEY);
