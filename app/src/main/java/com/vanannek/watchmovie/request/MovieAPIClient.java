@@ -45,6 +45,7 @@ public class MovieAPIClient {
         return mMovies;
     }
 
+    // 1 - This method that we are going to call through the classes
     public void searchMoviesAPI(String query, int pageNumber) {
         if (retrieveMoviesRunnable != null) {
             retrieveMoviesRunnable = null;

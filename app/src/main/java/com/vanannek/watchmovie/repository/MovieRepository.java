@@ -33,4 +33,9 @@ public class MovieRepository {
     public LiveData<List<Movie>> getMovies() {
         return movieAPIClient.getMovies();
     }
+
+    // 2 - Calling the method in repository
+    public void searchMovieAPI(String query, int pageNumber) {
+        movieAPIClient.searchMoviesAPI(query, pageNumber);
+    }
 }

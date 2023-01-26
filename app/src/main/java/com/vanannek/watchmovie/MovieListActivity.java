@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -41,7 +42,17 @@ public class MovieListActivity extends AppCompatActivity {
         btn = findViewById(R.id.btn);
 
         movieListViewModel = new ViewModelProvider(this).get(MovieListViewModel.class);
+
+        // Calling the observers
+
         observeAnyChange();
+
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                searchMovieAPI("Fast", 1);
+            }
+        });
     }
 
     // Observing any data change
@@ -50,9 +61,19 @@ public class MovieListActivity extends AppCompatActivity {
             @Override
             public void onChanged(List<Movie> movies) {
                 // Observing for any data change
-
+                if (movies != null) {
+                    for (Movie movie : movies) {
+                        // Getting the data in log
+                        Log.v(TAG, "onChanged: " + movie.getTitle());
+                    }
+                }
             }
         });
+    }
+
+    // 4 - Calling method in Main Activity
+    private void searchMovieAPI(String query, int pageNumber) {
+        movieListViewModel.searchMovieAPI(query, pageNumber);
     }
 
     private void getRetrofitResponse() {
