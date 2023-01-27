@@ -1,7 +1,6 @@
 package com.vanannek.watchmovie.repository;
 
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 
 import com.vanannek.watchmovie.models.Movie;
 import com.vanannek.watchmovie.request.MovieAPIClient;
@@ -35,7 +34,7 @@ public class MovieRepository {
     }
 
     // 2 - Calling the method in repository
-    public void searchMovieAPI(String query, int pageNumber) {
+    public void searchMoviesAPI(String query, int pageNumber) {
         movieAPIClient.searchMoviesAPI(query, pageNumber);
     }
 }

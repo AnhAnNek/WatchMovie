@@ -29,6 +29,9 @@ public class MovieListActivity extends AppCompatActivity {
 
     private static final String TAG = "MovieListActivity";
 
+    // Before we run our app, we need to add the Network Security config
+
+
     Button btn;
 
     // ViewModel
@@ -44,13 +47,15 @@ public class MovieListActivity extends AppCompatActivity {
         movieListViewModel = new ViewModelProvider(this).get(MovieListViewModel.class);
 
         // Calling the observers
-
         observeAnyChange();
 
+        // Testing the Method
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                searchMovieAPI("Fast", 1);
+                Toast.makeText(MovieListActivity.this, "On Click", Toast.LENGTH_SHORT).show();
+                // Displaying only the results of page 1
+                searchMoviesAPI("fast", 1);
             }
         });
     }
@@ -61,25 +66,24 @@ public class MovieListActivity extends AppCompatActivity {
             @Override
             public void onChanged(List<Movie> movies) {
                 // Observing for any data change
-                if (movies != null) {
-                    for (Movie movie : movies) {
-                        // Getting the data in log
-                        Log.v(TAG, "onChanged: " + movie.getTitle());
-                    }
+                if (movies == null) return;
+                for (Movie movie : movies) {
+                    // Getting the data in log
+                    Log.v(TAG, "onChanged: " + movie.getTitle());
                 }
             }
         });
     }
 
     // 4 - Calling method in Main Activity
-    private void searchMovieAPI(String query, int pageNumber) {
-        movieListViewModel.searchMovieAPI(query, pageNumber);
+    private void searchMoviesAPI(String query, int pageNumber) {
+        movieListViewModel.searchMoviesAPI(query, pageNumber);
     }
 
     private void getRetrofitResponse() {
         MovieApi movieApi = APIService.getInstance().getMovieAPI();
 
-        Call<MovieSearchResponse> responseCall = movieApi.searchMovie(
+        Call<MovieSearchResponse> responseCall = movieApi.searchMovies(
                 Credentials.API_KEY,
                 "Action",
                 1);

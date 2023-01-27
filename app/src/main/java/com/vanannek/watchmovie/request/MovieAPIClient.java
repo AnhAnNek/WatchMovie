@@ -53,12 +53,7 @@ public class MovieAPIClient {
 
         retrieveMoviesRunnable = new RetrieveMoviesRunnable(query, pageNumber);
 
-        final Future mHandler = AppExecutors.getInstance().networkIO().submit(new Runnable() {
-            @Override
-            public void run() {
-                // Retrieve Data from API
-            }
-        });
+        final Future mHandler = AppExecutors.getInstance().networkIO().submit(retrieveMoviesRunnable);
 
         AppExecutors.getInstance().networkIO().schedule(new Runnable() {
             @Override
@@ -70,7 +65,7 @@ public class MovieAPIClient {
     }
 
     // Retrieving data from RESTAPI by runnable class
-    // we have 2 types of Queries: the id &
+    // we have 2 types of Queries: the ID & search Queries
     private class RetrieveMoviesRunnable implements Runnable {
 
         private String query;
@@ -87,8 +82,12 @@ public class MovieAPIClient {
         public void run() {
             // Getting the response objects
             try {
+                Log.d(TAG, "Before response");
                 Response response = getMovies(query, pageNumber).execute();
-                if (cancelRequest) return;
+                Log.d(TAG, "After response");
+                if (cancelRequest) {
+                    return;
+                }
                 if (response.code() == 200) {
                     List<Movie> list = new ArrayList<>(((MovieSearchResponse) response.body()).getMovies());
                     if (pageNumber == 1) {
@@ -114,7 +113,7 @@ public class MovieAPIClient {
 
         // Search method/ query
         private Call<MovieSearchResponse> getMovies(String query, int pageNumber) {
-            return APIService.getInstance().getMovieAPI().searchMovie(
+            return APIService.getInstance().getMovieAPI().searchMovies(
                     Credentials.API_KEY,
                     query,
                     pageNumber);
