@@ -18,6 +18,10 @@ public class MovieRecyclerView extends RecyclerView.Adapter<RecyclerView.ViewHol
     private List<Movie> mMovies;
     private OnMovieListener onMovieListener;
 
+    public MovieRecyclerView(OnMovieListener onMovieListener) {
+        this.onMovieListener = onMovieListener;
+    }
+
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -37,12 +41,16 @@ public class MovieRecyclerView extends RecyclerView.Adapter<RecyclerView.ViewHol
 
         // ImageView: Using Glide Library
         Glide.with(((MovieViewHolder) holder).imageView.getContext())
-                .load(mMovies.get(position))
+                .load("https://image.tmdb.org/t/p/w500/"
+                        + mMovies.get(position).getPosterPath())
                 .into((((MovieViewHolder) holder).imageView));
     }
 
     @Override
     public int getItemCount() {
+        if (mMovies == null) {
+            return 0;
+        }
         return mMovies.size();
     }
 
