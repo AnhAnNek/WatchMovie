@@ -26,14 +26,20 @@ public class Movie implements Parcelable {
     @SerializedName("overview")
     private String overview;
 
+    private int runtime;
+
+    // For purpose of simplicity, I will use the release_date instead of category
+    // genres in nested json object, we will learn it later on this series
+
     public Movie(String title, String posterPath, String releaseDate,
-                 int movieId, float voteAverage, String overview) {
+                 int movieId, float voteAverage, String overview, int runtime) {
         this.title = title;
         this.posterPath = posterPath;
         this.releaseDate = releaseDate;
         this.movieId = movieId;
         this.voteAverage = voteAverage;
         this.overview = overview;
+        this.runtime = runtime;
     }
 
     protected Movie(Parcel in) {
@@ -43,6 +49,7 @@ public class Movie implements Parcelable {
         movieId = in.readInt();
         voteAverage = in.readFloat();
         overview = in.readString();
+        runtime = in.readInt();
     }
 
     public static final Creator<Movie> CREATOR = new Creator<Movie>() {
@@ -81,6 +88,10 @@ public class Movie implements Parcelable {
         return overview;
     }
 
+    public int getRuntime() {
+        return runtime;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -94,5 +105,6 @@ public class Movie implements Parcelable {
         parcel.writeInt(movieId);
         parcel.writeFloat(voteAverage);
         parcel.writeString(overview);
+        parcel.writeInt(runtime);
     }
 }
