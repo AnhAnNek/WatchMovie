@@ -8,7 +8,6 @@ import com.google.gson.annotations.SerializedName;
 public class Movie implements Parcelable {
     // model class for our movies
 
-    @SerializedName("title")
     private String title;
 
     @SerializedName("poster_path")

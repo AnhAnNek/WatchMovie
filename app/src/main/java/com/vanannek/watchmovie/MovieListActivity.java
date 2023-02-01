@@ -97,14 +97,8 @@ public class MovieListActivity extends AppCompatActivity implements OnMovieListe
             @Override
             public void onResponse(Call<MovieSearchResponse> call, Response<MovieSearchResponse> response) {
                 if (response.code() == 200) {
-                    Log.v(TAG, "the response" + response.body().toString());
                     List<Movie> movies = new ArrayList<>(response.body().getMovies());
-                    for (Movie movie : movies) {
-//                        Log.v(TAG, "Title: " + movie.getTitle());
-                        Log.d(TAG, new Gson().toJson(movie));
-//                        Log.v(TAG, "The release date" + movie.getReleaseDate());
-                    }
-                    return;
+
                 } else {
                     try {
                         Log.e(TAG, "Error: " + response.code() + "\n" +

@@ -1,14 +1,17 @@
 package com.vanannek.watchmovie.request;
 
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.vanannek.watchmovie.AppExecutors;
+import com.vanannek.watchmovie.MovieListActivity;
 import com.vanannek.watchmovie.models.Movie;
 import com.vanannek.watchmovie.response.MovieSearchResponse;
 import com.vanannek.watchmovie.utils.Credentials;
+import com.vanannek.watchmovie.utils.MovieApi;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -17,6 +20,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MovieAPIClient {
@@ -80,35 +84,64 @@ public class MovieAPIClient {
 
         @Override
         public void run() {
+            getRetrofitResponse(query, pageNumber);
             // Getting the response objects
-            try {
-                Log.d(TAG, "Before response");
-                Response response = getMovies(query, pageNumber).execute();
-                Log.d(TAG, "After response");
-                if (cancelRequest) {
-                    return;
-                }
-                if (response.code() == 200) {
-                    List<Movie> list = new ArrayList<>(((MovieSearchResponse) response.body()).getMovies());
-                    if (pageNumber == 1) {
-                        // Sending data to LiveData
-                        // PostValue: used for background thread
-                        // setValue: not for background thread
-                        mMovies.postValue(list);
+//            try {
+//                Response response = getMovies(query, pageNumber).execute();
+//                if (cancelRequest) {
+//                    return;
+//                }
+//                if (response.code() == 200) {
+//                    List<Movie> list = new ArrayList<>(((MovieSearchResponse) response.body()).getMovies());
+//                    if (pageNumber == 1) {
+//                        // Sending data to LiveData
+//                        // PostValue: used for background thread
+//                        // setValue: not for background thread
+//                        mMovies.postValue(list);
+//                    } else {
+//                        List<Movie> currentMovies = mMovies.getValue();
+//                        currentMovies.addAll(list);
+//                        mMovies.postValue(currentMovies);
+//                    }
+//                } else {
+//                    String error = response.errorBody().string();
+//                    Log.v(TAG, "Error" + error);
+//                    mMovies.postValue(null);
+//                }
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//                mMovies.postValue(null);
+//            }
+        }
+
+        // Method Temp
+        private void getRetrofitResponse(String query, int pageNumber) {
+            MovieApi movieApi = APIService.getInstance().getMovieAPI();
+
+            Call<MovieSearchResponse> responseCall = movieApi
+                    .searchMovies(Credentials.API_KEY, query, pageNumber);
+
+            responseCall.enqueue(new Callback<MovieSearchResponse>() {
+                @Override
+                public void onResponse(Call<MovieSearchResponse> call, Response<MovieSearchResponse> response) {
+                    if (response.code() == 200) {
+                        List<Movie> movies = new ArrayList<>(response.body().getMovies());
+                        mMovies.postValue(movies);
                     } else {
-                        List<Movie> currentMovies = mMovies.getValue();
-                        currentMovies.addAll(list);
-                        mMovies.postValue(currentMovies);
+                        try {
+                            Log.e(TAG, "Error: " + response.code() + "\n" +
+                                    "Error Body: " + response.errorBody().toString());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            mMovies.postValue(null);
+                        }
                     }
-                } else {
-                    String error = response.errorBody().string();
-                    Log.v(TAG, "Error" + error);
-                    mMovies.postValue(null);
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
-                mMovies.postValue(null);
-            }
+
+                @Override
+                public void onFailure(Call<MovieSearchResponse> call, Throwable t) {
+                }
+            });
         }
 
         // Search method/ query
