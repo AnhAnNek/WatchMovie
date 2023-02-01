@@ -1,6 +1,7 @@
 package com.vanannek.watchmovie;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -52,12 +53,36 @@ public class MovieListActivity extends AppCompatActivity implements OnMovieListe
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        // SearchView
+        setupSearchView();
+
         recyclerView = findViewById(R.id.recyclerView);
 
         movieListViewModel = new ViewModelProvider(this).get(MovieListViewModel.class);
         observeAnyChange();
         configureRecyclerView();
-        searchMoviesAPI("fast", 1);
+    }
+
+    // Get data from search view & query the api to get the results (Movies)
+    private void setupSearchView() {
+        final SearchView searchView = findViewById(R.id.searchView);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                movieListViewModel.searchMoviesAPI(
+                        // The Search string got from search view
+                        query,
+                        1
+                );
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+
     }
 
     // Observing any data change
@@ -152,7 +177,7 @@ public class MovieListActivity extends AppCompatActivity implements OnMovieListe
 
     @Override
     public void onMovieClick(int position) {
-        Toast.makeText(this, "The Position: " + position, Toast.LENGTH_SHORT).show();
+
     }
 
     @Override
