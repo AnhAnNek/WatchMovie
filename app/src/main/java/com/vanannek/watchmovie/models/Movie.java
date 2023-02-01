@@ -25,20 +25,21 @@ public class Movie implements Parcelable {
     @SerializedName("overview")
     private String overview;
 
-    private int runtime;
+    @SerializedName("original_language")
+    private String originalLanguage;
 
     // For purpose of simplicity, I will use the release_date instead of category
     // genres in nested json object, we will learn it later on this series
 
     public Movie(String title, String posterPath, String releaseDate,
-                 int movieId, float voteAverage, String overview, int runtime) {
+                 int movieId, float voteAverage, String overview, String originalLanguage) {
         this.title = title;
         this.posterPath = posterPath;
         this.releaseDate = releaseDate;
         this.movieId = movieId;
         this.voteAverage = voteAverage;
         this.overview = overview;
-        this.runtime = runtime;
+        this.originalLanguage = originalLanguage;
     }
 
     protected Movie(Parcel in) {
@@ -48,7 +49,7 @@ public class Movie implements Parcelable {
         movieId = in.readInt();
         voteAverage = in.readFloat();
         overview = in.readString();
-        runtime = in.readInt();
+        originalLanguage = in.readString();
     }
 
     public static final Creator<Movie> CREATOR = new Creator<Movie>() {
@@ -87,8 +88,8 @@ public class Movie implements Parcelable {
         return overview;
     }
 
-    public int getRuntime() {
-        return runtime;
+    public String getOriginalLanguage() {
+        return originalLanguage;
     }
 
     @Override
@@ -104,6 +105,19 @@ public class Movie implements Parcelable {
         parcel.writeInt(movieId);
         parcel.writeFloat(voteAverage);
         parcel.writeString(overview);
-        parcel.writeInt(runtime);
+        parcel.writeString(originalLanguage);
+    }
+
+    @Override
+    public String toString() {
+        return "Movie{" +
+                "title='" + title + '\'' +
+                ", posterPath='" + posterPath + '\'' +
+                ", releaseDate='" + releaseDate + '\'' +
+                ", movieId=" + movieId +
+                ", voteAverage=" + voteAverage +
+                ", overview='" + overview + '\'' +
+                ", originalLanguage='" + originalLanguage + '\'' +
+                '}';
     }
 }

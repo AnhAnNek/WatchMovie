@@ -147,7 +147,7 @@ public class MovieListActivity extends AppCompatActivity implements OnMovieListe
 
     @Override
     public void onMovieClick(int position) {
-
+        Toast.makeText(this, "The Position: " + position, Toast.LENGTH_SHORT).show();
     }
 
     @Override
